@@ -21,8 +21,8 @@ class StoreRoomExitsController < ApplicationController
 
   # POST /store_room_exits or /store_room_exits.json
   def create
-    @store_room_exit = StoreRoomExit.new(store_room_exit_params)
-    from = @store_room_exit.from_receive_donation_request_id
+    @store_room_exit                                  = StoreRoomExit.new(store_room_exit_params)
+    from                                              = @store_room_exit.from_receive_donation_request_id
     @store_room_exit.from_receive_donation_request_id = ReceiveDonationRequest.first&.id
     respond_to do |format|
       if @store_room_exit.save
@@ -41,17 +41,29 @@ class StoreRoomExitsController < ApplicationController
   # PATCH/PUT /store_room_exits/1 or /store_room_exits/1.json
   def update
     respond_to do |format|
-      c = @store_room_exit.store_room_exit_contents.count
+      c    = @store_room_exit.store_room_exit_contents.count
       code = params[:form_append_item][:code]
-      if @store_room_exit.store_room_exit_contents.find_by(code:).present?
+      if %w[9784814400492 1923055024007].include?(code.to_s)
+        lc = @store_room_exit.store_room_exit_contents.where(code:).count
+        created = @store_room_exit.store_room_exit_contents.create(
+          code:,
+          name: "重量で持ち出す食品(ドライブの食品)#{lc}-#{c + 1}"
+        )
+        format.html {
+          redirect_to edit_store_room_exit_url(@store_room_exit),
+                      notice: "#{created.name}を追加しました"
+        }
+        format.json { render :show, status: :ok, location: @store_room_exit }
+
+      elsif @store_room_exit.store_room_exit_contents.find_by(code:).present?
         format.html {
           redirect_to edit_store_room_exit_url(@store_room_exit),
                       notice: "#{code}は重複しています。"
         }
       else
         created = @store_room_exit.store_room_exit_contents.create(
-          code: ,
-          name: "バーコードで辞書引きした食品#{c+1}"
+          code:,
+          name: "バーコードで辞書引きした食品#{c + 1}"
         )
         format.html {
           redirect_to edit_store_room_exit_url(@store_room_exit),
@@ -73,13 +85,14 @@ class StoreRoomExitsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_store_room_exit
-      @store_room_exit = StoreRoomExit.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def store_room_exit_params
-      params.require(:store_room_exit).permit(:from_receive_donation_request_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_store_room_exit
+    @store_room_exit = StoreRoomExit.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def store_room_exit_params
+    params.require(:store_room_exit).permit(:from_receive_donation_request_id)
+  end
 end

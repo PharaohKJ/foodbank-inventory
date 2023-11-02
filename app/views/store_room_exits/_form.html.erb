@@ -45,16 +45,16 @@
     </div>
     <hr>
   <% else %>
-    <p>
-      <%= form.label :name, '予約団体バーコード', class: 'form-label' %>
-      <%= form.text_field :from_receive_donation_request_id, class: 'form-control' %>
-    </p>
+    <div class="row m-3">
+      <div class="col">
+        <%= form.label :name, '予約団体バーコードをスキャンしてください', class: 'form-label display-6' %>
+        <%= form.text_field :from_receive_donation_request_id, class: 'form-control', autofocus: true %>
+      </div>
+    </div>
 
-    <p>
-      <%= form.label :name, '整理番号', class: 'form-label' %>
-      <%= form.text_field :from_receive_donation_request_id, class: 'form-control' %>
-    </p>
-    <%= button_tag :この内容を持ち出す %>
+    <div class="d-grid gap-2 mt-1">
+      <%= form.submit '出庫開始', class: 'btn btn-primary' %>
+    </div>
 
   <% end %>
 <% end %>
@@ -66,10 +66,16 @@
         <%= form.text_field :code, class: 'form-control', autofocus: true, placeholder: 'ここでバーコードをスキャンしてください' %>
       </div>
     </div>
+    <div class="row m-1">
+      <div class="col">
+        現在: <%= store_room_exit.store_room_exit_contents.count %> 個 / 50個
+      </div>
+    </div>
     <div class="d-grid gap-2 mt-1">
       <%= form.submit 'バーコードで追加', class: 'btn btn-primary' %>
     </div>
   <% end %>
+
 
   <table class="table border-1">
     <thead>
@@ -86,16 +92,25 @@
       <td>
         重さ(kg)
       </td>
+      <td>
+        取消
+      </td>
     </tr>
     </thead>
     <tbody>
     <% store_room_exit.store_room_exit_contents.each do |content| %>
       <tr>
         <td><%= content.code %></td>
-        <td>食品の種類(自動:例 お米)</td>
-        <td><%= content.name %></td>
+          <td><%= content.name %></td>
+        <% if %w[9784814400492 1923055024007].include?(content.code.to_s) %>
+          <td>-</td>
+        <% else %>
+          <td>
+            食品の重さ(自動)
+          </td>
+        <% end %>
         <td>
-          食品の重さ(自動)
+          ×
         </td>
       </tr>
     <% end %>
@@ -104,6 +119,3 @@
 
 
 <% end %>
-
-
-<%= button_tag :この内容を持ち出す %>
