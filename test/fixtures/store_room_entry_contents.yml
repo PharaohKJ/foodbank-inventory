@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  store_room_entry: one
+  barcode: MyString
+  maker: MyString
+  name: MyString
+  content_type: 1
+  donation_request_content: one
+
+two:
+  store_room_entry: two
+  barcode: MyString
+  maker: MyString
+  name: MyString
+  content_type: 1
+  donation_request_content: two

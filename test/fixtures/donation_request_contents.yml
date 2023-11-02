@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  donation_request: one
+  maker: MyString
+  expiry_date: 2023-05-25
+  per_weight: 1
+  per_case: 1
+  count: 1
+  reason: MyText
+
+two:
+  donation_request: two
+  maker: MyString
+  expiry_date: 2023-05-25
+  per_weight: 1
+  per_case: 1
+  count: 1
+  reason: MyText

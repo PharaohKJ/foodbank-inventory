@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Store room exits</h1>
+
+<div id="store_room_exits">
+  <% @store_room_exits.each do |store_room_exit| %>
+    <%= render store_room_exit %>
+    <p>
+      <%= link_to "Show this store room exit", store_room_exit %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New store room exit", new_store_room_exit_path %>

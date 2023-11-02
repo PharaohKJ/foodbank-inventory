@@ -1,0 +1,11 @@
+<%= standard_container do %>
+  <%= render 'shared/paper_title', title: '寄附申請 確認と修正' %>
+
+  <%= render "form", donation_request: @donation_request, edit: true %>
+
+  <hr class="p-1">
+
+  <%= link_to '受領証を作成する', accepted_paper_donation_request_path(@donation_request), class: 'btn btn-primary' %>
+  <%= link_to '入庫表(バーコード)を作成する', new_store_room_entry_path(donation_request_id: @donation_request.id) , class: 'btn btn-primary' %>
+
+<% end %>

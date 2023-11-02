@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @store_room_exit %>
+
+<div>
+  <%= link_to "Edit this store room exit", edit_store_room_exit_path(@store_room_exit) %> |
+  <%= link_to "Back to store room exits", store_room_exits_path %>
+
+  <%= button_to "Destroy this store room exit", @store_room_exit, method: :delete %>
+</div>

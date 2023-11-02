@@ -1,0 +1,21 @@
+<%= standard_container do %>
+  <%= render 'shared/paper_title', title: '寄附申請一覧' %>
+    <div id="donation_requests">
+      <table class="table table-bordered table-striped">
+        <thead>
+        <tr><th>申込日</th><th>企業・団体名</th><th>担当者</th><th>TEL</th><th>品数/重</th></tr>
+        </thead>
+        <tbody>
+          <% @donation_requests.each do |donation_request| %>
+            <tr>
+              <td><%= link_to l(donation_request.created_at,format: :short), edit_donation_request_path(donation_request) %></td>
+              <td><%= donation_request.company %></td>
+              <td><%= donation_request.name %></td>
+              <td><%= donation_request.tel %></td>
+              <td><%= donation_request.donation_request_contents.count %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+<% end %>

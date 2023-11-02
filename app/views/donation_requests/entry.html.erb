@@ -1,0 +1,23 @@
+<% provide(:page_name, "") %>
+<% provide(:no_header, true) %>
+
+<%= standard_container do %>
+  <%= render 'shared/paper_title', title: '寄附申請' %>
+
+  <div class="row">
+    <div class="col-lg-6 col-md-8 mx-auto text-center">
+      <h2>寄附申請フォーム</h2>
+    </div>
+  </div>
+
+  <%= form_with model: FormEntry.new, url: '' do |form| %>
+    <%= form.email_field :email, class: 'form-control', placeholder: '空欄 or 以前申請したメールアドレス' %>
+    <div class="text-muted col mx-auto text-center">
+      以前に用いたメールアドレスを入力して先に進むことで、入力を省略できます。<br>
+      はじめて申請する方は空欄のまま申請を進んでください。
+    </div>
+    <div class="row justify-content-center mx-2">
+      <%= form.submit '申請へ進む', class: 'btn btn-primary mt-1' %>
+    </div>
+  <% end %>
+<% end %>

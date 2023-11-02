@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @receive_donation_request %>
+
+<div>
+  <%= link_to "Edit this receive donation request", edit_receive_donation_request_path(@receive_donation_request) %> |
+  <%= link_to "Back to receive donation requests", receive_donation_requests_path %>
+
+  <%= button_to "Destroy this receive donation request", @receive_donation_request, method: :delete %>
+</div>

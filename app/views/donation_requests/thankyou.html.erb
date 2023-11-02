@@ -1,0 +1,13 @@
+<% provide(:page_name, "") %>
+<% provide(:no_header, true) %>
+
+<%= standard_container do %>
+  <%= render 'shared/paper_title', title: '寄附申請ありがとうございました' %>
+
+  <div class="row">
+    <div class="col-lg-12 col-md-12 mx-auto text-center">
+      <h2><%= l(@donation_request.created_at, format: :long) %> に以下の内容で寄附申請を受け付けました。</h2>
+         内容を確認し、ご連絡差し上げます。
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,109 @@
+<%= form_with(model: store_room_exit) do |form| %>
+  <% if store_room_exit.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(store_room_exit.errors.count, "error") %> prohibited this store_room_exit from being saved:</h2>
+
+      <ul>
+        <% store_room_exit.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if store_room_exit.persisted? %>
+    <% entry = ReceiveDonationRequest.find(store_room_exit.from_receive_donation_request_id) %>
+    <div class="row">
+      <div class="col">
+        <span class="text-muted">出庫日</span><br>
+        <span class="display-6">
+          <%= l(Time.current, format: :long) %>
+          </span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <span class="text-muted">団体名</span><br>
+        <span class="display-6">
+          <%= entry.name %>
+          </span>
+      </div>
+      <div class="col">
+        <span class="text-muted">訪問者氏名</span><br>
+        <span class="display-6">
+          <%= entry.name %>
+          </span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <span class="text-muted">使用目的</span><br>
+        <span class="display-6">
+            <%= text_field_tag :reason, '', class: 'form-control' %>
+          </span>
+      </div>
+    </div>
+    <hr>
+  <% else %>
+    <p>
+      <%= form.label :name, '予約団体バーコード', class: 'form-label' %>
+      <%= form.text_field :from_receive_donation_request_id, class: 'form-control' %>
+    </p>
+
+    <p>
+      <%= form.label :name, '整理番号', class: 'form-label' %>
+      <%= form.text_field :from_receive_donation_request_id, class: 'form-control' %>
+    </p>
+    <%= button_tag :この内容を持ち出す %>
+
+  <% end %>
+<% end %>
+
+<% if store_room_exit.persisted? %>
+  <%= form_with(model: FormAppendItem.new, url: store_room_exit_path(store_room_exit), method: :PATCH) do |form| %>
+    <div class="row">
+      <div class="col">
+        <%= form.text_field :code, class: 'form-control', autofocus: true, placeholder: 'ここでバーコードをスキャンしてください' %>
+      </div>
+    </div>
+    <div class="d-grid gap-2 mt-1">
+      <%= form.submit 'バーコードで追加', class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+
+  <table class="table border-1">
+    <thead>
+    <tr>
+      <td>
+        バーコード
+      </td>
+      <td>
+        種別
+      </td>
+      <td>
+        食品名
+      </td>
+      <td>
+        重さ(kg)
+      </td>
+    </tr>
+    </thead>
+    <tbody>
+    <% store_room_exit.store_room_exit_contents.each do |content| %>
+      <tr>
+        <td><%= content.code %></td>
+        <td>食品の種類(自動:例 お米)</td>
+        <td><%= content.name %></td>
+        <td>
+          食品の重さ(自動)
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+
+<% end %>
+
+
+<%= button_tag :この内容を持ち出す %>

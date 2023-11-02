@@ -1,0 +1,30 @@
+<%= standard_container do %>
+  <%= render 'shared/paper_title', title: '受領書' %>
+
+  <%= render @donation_request %>
+
+  <table class="table table-bordered">
+    <thead><tr><td>品名</td><td>メーカー</td><td>重量/個</td><td>個数</td><td>重量(kg)</td></tr></thead>
+    <tbody>
+      <% @donation_request.donation_request_contents.each do |c| %>
+      <tr>
+        <td><%= c.name %></td>
+        <td><%= c.maker %></td>
+        <td><%= c.per_weight %></td>
+        <td><%= c.count %></td>
+        <td><%= c.count * c.per_weight / 1000.0 %></td>
+      </tr>
+      <% end %>
+
+    </tbody>
+  </table>
+
+  <div class="row border p-3 m-3">
+    上記の寄贈食品を受領しました。<br>
+    <%= l(Time.now, format: :long) %><br>
+    いしかわフードバンク・ネット 理事長<br>
+    〒920-0024  金沢市西念3丁目3-5 石川県勤労者福祉文化会館５F (さわやかU内)<br>
+    TEL: 076-222-3310 FAX:076-222-3374
+  </div>
+
+<% end %>

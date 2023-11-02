@@ -1,0 +1,106 @@
+<%= form_with(model: donation_request) do |form| %>
+  <% if donation_request.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(donation_request.errors.count, "error") %> prohibited this donation_request from being saved:</h2>
+
+      <ul>
+        <% donation_request.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-md pb-4 border-bottom">
+      <%= form.label :email, 'メールアドレス', class: 'form-label' %>
+      <%= form.text_field :email, class: 'form-control', required: true %>
+    </div>
+    <div class="col-md pb-4 border-bottom">
+      <%= form.label :company, '寄附企業・団体名', class: 'form-label' %>
+      <%= form.text_field :company, class: 'form-control', required: true %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md pb-4 border-bottom">
+      <%= form.label :name, 'ご担当者名', class: 'form-label' %>
+      <%= form.text_field :name, class: 'form-control', required: true %>
+    </div>
+    <div class="col-md pb-4 border-bottom">
+      <%= form.label :tel, 'TEL', class: 'form-label' %>
+      <%= form.telephone_field :tel, class: 'form-control', required: true %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col pb-4">
+      <%= form.label :address, '住所', class: 'form-label' %>
+      <%= form.text_field :address, class: 'form-control', required: true %>
+    </div>
+  </div>
+
+  <hr class="p-1">
+
+  <% 3.times do |x| %>
+    <%= form.fields_for :donation_request_contents, @donation_request.donation_request_contents[x] || @donation_request.donation_request_contents.build do |content_f| %>
+      <%= content_f.hidden_field :id %>
+      <h3><%= x+1 %>番目</h3>
+      <div class="row">
+        <div class="col-md-6 col-md pb-4 border-bottom">
+          <%= content_f.label :name, '品名', class: 'form-label' %>
+          <%= content_f.text_field :name, class: 'form-control' %>
+        </div>
+        <div class="col-md-6 col-md pb-4 border-bottom">
+          <%= content_f.label :maker, 'メーカー', class: 'form-label' %>
+          <%= content_f.text_field :maker, class: 'form-control' %>
+        </div>
+        <div class="col-md-4 col-md pb-4 border-bottom">
+          <%= content_f.label :expiry_date, '賞味期限', class: 'form-label' %>
+          <%= content_f.date_field :expiry_date, class: 'form-control' %>
+          <span class="text-muted">月表記の場合は最終日を入力</span>
+        </div>
+        <div class="col-md-4 col-md pb-4 border-bottom">
+          <%= content_f.label :per_weight, '1個あたり重量(g)', class: 'form-label' %>
+          <%= content_f.number_field :per_weight, class: 'form-control' %>
+        </div>
+
+        <div class="col-md-4 col-md pb-4 border-bottom">
+          <%= content_f.label :count, '個数', class: 'form-label' %>
+          <%= content_f.number_field :count, class: 'form-control' %>
+        </div>
+
+        <!--
+        <div class="col-md-2 pb-4 border-bottom">
+          <%= content_f.label :content_type, '種類', class: 'form-label' %>
+          <%= content_f.number_field :content_type, class: 'form-control' %>
+          <span class="text-muted">省略可</span>
+        </div>
+        -->
+      </div>
+    <% end %>
+  <% end %>
+
+  <% unless edit %>
+    <div class="row">
+      <div class="col">
+        <%= form.submit '寄附項目を追加', class: 'btn btn-secondary' %>
+      </div>
+      <div class="col">
+        <%= form.submit '寄附項目をコピー追加', class: 'btn btn-secondary' %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <%= form.submit '申請する', class: 'btn btn-primary btn-block'%>
+      </div>
+    </div>
+  <% else %>
+    <div class="row">
+      <div class="col">
+        <%= form.submit '修正する', class: 'btn btn-primary btn-block'%>
+      </div>
+    </div>
+  <% end %>
+<% end %>

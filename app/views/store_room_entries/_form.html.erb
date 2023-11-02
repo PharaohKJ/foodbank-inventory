@@ -1,0 +1,42 @@
+<%= form_with(model: store_room_entry) do |form| %>
+  <% if store_room_entry.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(store_room_entry.errors.count, "error") %> prohibited this store_room_entry from being saved:</h2>
+
+      <ul>
+        <% store_room_entry.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <%= form.hidden_field :donation_request_id %>
+
+  <%= link_to '元寄附申請の表示', edit_donation_request_path(store_room_entry.donation_request.id) %>
+
+  <% store_room_entry.store_room_entry_contents.each do |content| %>
+    <%= form.fields_for :store_room_entry_contents, content do |content_f| %>
+      <%= content_f.hidden_field :id %>
+      <div class="row">
+        <div class="col-md-8 pb-4 border-bottom">
+          <%= content_f.label :name, 'ラベル名', class: 'form-label' %>
+          <%= content_f.text_field :name, class: 'form-control' %>
+          <span class="text-muted">
+          </span>
+        </div>
+        <div class="col-md-4 pb-4 border-bottom">
+          <%= content_f.label :barcode, 'バーコード', class: 'form-label' %>
+          <%= content_f.text_field :barcode, class: 'form-control', readonly: true %>
+          <span class="text-muted">
+            賞味期限 <%= l(content.donation_request_content.expiry_date) %>
+          </span>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+
+
+  <div>
+    <%= form.submit 'エクセルのダウンロード', class: 'btn btn-primary' %>
+  </div>
+<% end %>

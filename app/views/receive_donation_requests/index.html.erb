@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Receive donation requests</h1>
+
+<div id="receive_donation_requests">
+  <% @receive_donation_requests.each do |receive_donation_request| %>
+    <%= render receive_donation_request %>
+    <p>
+      <%= link_to "Show this receive donation request", receive_donation_request %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New receive donation request", new_receive_donation_request_path %>

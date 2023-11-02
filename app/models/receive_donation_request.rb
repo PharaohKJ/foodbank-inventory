@@ -1,0 +1,2 @@
+class ReceiveDonationRequest < ApplicationRecord
+end

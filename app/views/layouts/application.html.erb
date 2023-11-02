@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Foodbank Inventory</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+    <title><%= yield(:page_title) || 'BnrSystem' %></title>
+
+  </head>
+
+  <%= content_tag :body do %>
+  <% if yield(:no_header).present? %>
+  <% else %>
+      <%= render 'shared/header-user', page_name: yield(:page_name) %>
+  <% end %>
+  <% if notice %>
+    <div class="alert alert-primary m-2" role="alert">
+      <%= notice %>
+    </div>
+  <% end %>
+
+  <%= yield %>
+  <div class="text-center p-5">Foobank Inventory by PhalanxWare with いしかわフードバンク・ネット</div>
+<% end %>
+</html>
