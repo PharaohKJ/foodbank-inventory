@@ -101,7 +101,14 @@
     <% store_room_exit.store_room_exit_contents.each do |content| %>
       <tr>
         <td><%= content.code %></td>
-          <td><%= content.name %></td>
+        <% if %w[9784814400492].include?(content.code.to_s) %>
+          <td>フードドライブA</td>
+        <% elsif %w[1923055024007].include?(content.code.to_s) %>
+          <td>フードドライブB</td>
+        <% else %>
+          <td>食品の種類(自動:例 お米)</td>
+        <% end %>
+        <td><%= content.name %></td>
         <% if %w[9784814400492 1923055024007].include?(content.code.to_s) %>
           <td>-</td>
         <% else %>
