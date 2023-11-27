@@ -1,0 +1,41 @@
+<%= standard_container do %>
+  重さを入力してください。
+  <%= form_with(method: :post, model: @form, url: input_weight_store_room_exit_path(@store_room_exit)) do |f| %>
+    <div class="row">
+      <div class="col-md-6 pb-4 border-bottom">
+        <%= @form.name1 %><br>
+        <%= f.number_field :weight1, class: 'form-control' %>
+      </div>
+      <div class="col-md-6 pb-4 border-bottom">
+        <%= @form.name2 %><br>
+        <%= f.number_field :weight2, class: 'form-control' %>
+      </div>
+      <div class="col-md-6 pb-4 border-bottom">
+        <%= @form.name3 %><br>
+        <%= f.number_field :weight3, class: 'form-control' %>
+      </div>
+      <div class="col-md-6 pb-4 border-bottom">
+        <%= @form.name4 %><br>
+        <%= f.number_field :weight4, class: 'form-control' %>
+      </div>
+      <div class="col-md-6 pb-4 border-bottom">
+        <%= @form.name5 %><br>
+        <%= f.number_field :weight5, class: 'form-control' %>
+      </div>
+      <div class="col-md-6 pb-4 border-bottom">
+        <%= @form.name6 %><br>
+        <%= f.number_field :weight6, class: 'form-control' %>
+      </div>
+      <div class="col-md-6 pb-4 border-bottom">
+        <%= @form.name7 %><br>
+        <%= f.number_field :weight7, class: 'form-control' %>
+      </div>
+      <div class="col-md-6 pb-4 border-bottom">
+        <%= @form.name8 %><br>
+        <%= f.number_field :weight8, class: 'form-control' %>
+      </div>
+    </div>
+
+    <%= f.submit '重さの入力', class: 'btn btn-primary' %>
+  <% end %>
+<% end %>

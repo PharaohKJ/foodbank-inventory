@@ -4,6 +4,11 @@ Rails.application.routes.draw do
       get 'entry', to: 'store_room_exits#entry'
       post 'entry', to: 'store_room_exits#entry_point'
     end
+
+    member do
+      get 'input_weight'
+      post 'input_weight', to: 'store_room_exits#update_input_weight'
+    end
   end
   resources :receive_donation_requests
   resources :store_room_entries

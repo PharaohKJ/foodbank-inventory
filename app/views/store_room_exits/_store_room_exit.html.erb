@@ -1,2 +1,90 @@
-<div id="<%= dom_id store_room_exit %>">
+<% entry = ReceiveDonationRequest.find_by(id: store_room_exit.from_receive_donation_request_id) %>
+<% if entry %>
+<div class="row">
+  <div class="col">
+    <span class="text-muted">出庫日</span><br>
+    <span class="">
+          <%= l(Time.current, format: :long) %>
+          </span>
+  </div>
 </div>
+<div class="row">
+  <div class="col">
+    <span class="text-muted">団体名</span><br>
+    <span class="">
+          <%= entry.name %>
+          </span>
+  </div>
+  <div class="col">
+    <span class="text-muted">出庫担当者氏名</span><br>
+    <span class="">
+          <%= entry.name %>
+          </span>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <span class="text-muted">使用目的</span><br>
+    <span class="">
+            <%= entry.reason %>
+          </span>
+  </div>
+</div>
+<hr>
+
+<div class="row m-1">
+  <div class="col">
+    合計 <%= store_room_exit.store_room_exit_contents.count %> 個
+  </div>
+</div>
+
+<hr>
+
+<table class="table table-bordered border-1">
+  <thead>
+  <tr>
+    <td>
+      バーコード
+    </td>
+    <td>
+      種別
+    </td>
+    <td>
+      食品名
+    </td>
+    <td>
+      重さ(kg)
+    </td>
+  </tr>
+  </thead>
+  <tbody>
+  <% store_room_exit.store_room_exit_contents.order(id: :desc).each do |content| %>
+    <tr>
+      <td><%= content.code %></td>
+      <td><%= content.content_type %></td>
+      <td><%= content.name %></td>
+      <% if %w[9784814400492 1923055024007].include?(content.code.to_s) %>
+        <td>-</td>
+      <% else %>
+        <td class="text-end">
+          <%= content.weight %>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>計</td>
+    <td></td>
+    <td></td>
+    <td class="text-end"><%= store_room_exit.store_room_exit_contents.sum(:weight).to_fs(:delimited) %></td>
+  </tr>
+  </tbody>
+</table>
+<% else %>
+<% end %>

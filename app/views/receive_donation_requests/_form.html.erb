@@ -11,27 +11,43 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :tel, style: "display: block" %>
-    <%= form.text_field :tel %>
+
+  <div class="row">
+    <div class="col-md-6 pb-4 border-bottom">
+      <%= form.label :organization_name, '貴団体名', class: 'form-label'%>
+      <%= form.text_field :organization_name, required: true, class: 'form-control', placeholder: '団体名' %>
+    </div>
+    <div class="col-md-6 pb-4 border-bottom">
+      <%= form.label :name, '当日ご担当者名(*)', class: 'form-label'%>
+      <%= form.text_field :name, required: true, class: 'form-control', placeholder: '石川太郎' %>
+    </div>
+    <div class="col-md-6 pb-4 border-bottom">
+      <%= form.label :tel, '当日連絡電話番号(*)', class: 'form-label'%>
+      <%= form.telephone_field :tel, required: true, class: 'form-control', placeholder: '01234567890' %>
+    </div>
+    <div class="col-md-6 pb-4 border-bottom">
+      <%= form.label :fax, 'FAX番号', class: 'form-label'%>
+      <%= form.telephone_field :fax, class: 'form-control', placeholder: '01234567890' %>
+    </div>
+    <div class="col-md-6 pb-4 border-bottom">
+      <%= form.label :scheduled_at, '出庫訪問予定日(*)', class: 'form-label'%>
+      <%= form.datetime_field :scheduled_at, required: true, class: 'form-control' %>
+      <span class="text-muted">出庫する予定日を指定してください。予定の変更をお願いする場合にはご連絡差し上げます。</span>
+    </div>
+    <div class="col-md-6 pb-4 border-bottom">
+      <%= form.label :used_at, '使用予定日(*)', class: 'form-label'%>
+      <%= form.date_field :used_at, required: true, class: 'form-control' %>
+      <span class="text-muted">受け取った食品をいつ使う予定かご記入ください。</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md pb-4 border-bottom">
+      <%= form.label :reason, '利用目的(*)', class: 'form-label'%>
+      <%= form.telephone_field :reason, class: 'form-control', placeholder: 'こども食堂で提供など' %>
+    </div>
   </div>
 
-  <div>
-    <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name %>
-  </div>
-
-  <div>
-    <%= form.label :scheduled_time, style: "display: block" %>
-    <%= form.datetime_field :scheduled_time %>
-  </div>
-
-  <div>
-    <%= form.label :accepted, style: "display: block" %>
-    <%= form.check_box :accepted %>
-  </div>
-
-  <div>
-    <%= form.submit %>
+  <div class="d-grid gap-2">
+    <%= form.submit '申請します', class: 'btn btn-primary' %>
   </div>
 <% end %>

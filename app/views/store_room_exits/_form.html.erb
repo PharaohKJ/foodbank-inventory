@@ -16,39 +16,39 @@
     <div class="row">
       <div class="col">
         <span class="text-muted">出庫日</span><br>
-        <span class="display-6">
+        <strong>
           <%= l(Time.current, format: :long) %>
-          </span>
+        </strong>
       </div>
     </div>
     <div class="row">
       <div class="col">
         <span class="text-muted">団体名</span><br>
-        <span class="display-6">
+        <strong>
           <%= entry.name %>
-          </span>
+        </strong>
       </div>
       <div class="col">
         <span class="text-muted">訪問者氏名</span><br>
-        <span class="display-6">
+        <strong>
           <%= entry.name %>
-          </span>
+        </strong>
       </div>
     </div>
     <div class="row">
       <div class="col">
         <span class="text-muted">使用目的</span><br>
-        <span class="display-6">
-            <%= text_field_tag :reason, '', class: 'form-control' %>
-          </span>
+        <strong>
+          <%= entry.reason %>
+        </strong>
       </div>
     </div>
     <hr>
   <% else %>
     <div class="row m-3">
       <div class="col">
-        <%= form.label :name, '予約団体バーコードをスキャンしてください', class: 'form-label display-6' %>
-        <%= form.text_field :from_receive_donation_request_id, class: 'form-control', autofocus: true %>
+        <%= form.label :name, '出庫受付カードをスキャンしてください', class: 'form-label display-6' %>
+        <%= form.text_field :from_receive_donation_request_id, class: 'form-control', autofocus: true, autocomplete: 'off' %>
       </div>
     </div>
 
@@ -63,7 +63,11 @@
   <%= form_with(model: FormAppendItem.new, url: store_room_exit_path(store_room_exit), method: :PATCH) do |form| %>
     <div class="row">
       <div class="col">
-        <%= form.text_field :code, class: 'form-control', autofocus: true, placeholder: 'ここでバーコードをスキャンしてください' %>
+        <% if store_room_exit.store_room_exit_contents.count >= 50 %>
+          <%= form.text_field :code, class: 'form-control', placeholder: '50を超えているので追加できません', disabled: true %>
+        <% else %>
+          <%= form.text_field :code, class: 'form-control', autofocus: true, placeholder: 'ここでバーコードをスキャンしてください' %>
+        <% end %>
       </div>
     </div>
     <div class="row m-1">
@@ -74,10 +78,9 @@
     <div class="d-grid gap-2 mt-1">
       <%= form.submit 'バーコードで追加', class: 'btn btn-primary' %>
     </div>
-  <% end %>
 
 
-  <table class="table border-1">
+  <table class="table border-1 table-striped">
     <thead>
     <tr>
       <td>
@@ -98,31 +101,33 @@
     </tr>
     </thead>
     <tbody>
-    <% store_room_exit.store_room_exit_contents.each do |content| %>
+    <% store_room_exit.store_room_exit_contents.order(id: :desc).each do |content| %>
       <tr>
-        <td><%= content.code %></td>
-        <% if %w[9784814400492].include?(content.code.to_s) %>
-          <td>フードドライブA</td>
-        <% elsif %w[1923055024007].include?(content.code.to_s) %>
-          <td>フードドライブB</td>
-        <% else %>
-          <td>食品の種類(自動:例 お米)</td>
-        <% end %>
+        <td class="font-monospace">
+          <% if content.is_drive %>
+            <small><%= content.name %></small><br/>
+            <small>(なし)</small>
+          <% else %>
+            <%= content.code %>
+          <% end %>
+        </td>
+        <td><%= content.content_type %></td>
         <td><%= content.name %></td>
-        <% if %w[9784814400492 1923055024007].include?(content.code.to_s) %>
+        <% if content.is_drive %>
           <td>-</td>
         <% else %>
           <td>
-            食品の重さ(自動)
+            <%= content.weight %>
           </td>
         <% end %>
         <td>
-          ×
+          <button class="btn btn-danger">x</button>
         </td>
       </tr>
     <% end %>
     </tbody>
   </table>
-
+    <%= form.submit 'この内容で出庫', class: 'btn btn-primary' %>
+  <% end %>
 
 <% end %>

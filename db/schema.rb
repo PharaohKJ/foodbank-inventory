@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_20_054542) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_23_015452) do
   create_table "donation_request_contents", force: :cascade do |t|
     t.integer "donation_request_id", null: false
     t.string "maker"
@@ -43,6 +43,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_20_054542) do
     t.boolean "accepted"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "fax"
+    t.string "organization_name"
+    t.string "reason"
+    t.datetime "used_at"
+    t.datetime "scheduled_at"
+    t.datetime "accepted_at"
   end
 
   create_table "store_room_entries", force: :cascade do |t|
@@ -61,6 +67,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_20_054542) do
     t.integer "donation_request_content_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "weight"
     t.index ["donation_request_content_id"], name: "index_store_room_entry_contents_on_donation_request_content_id"
     t.index ["store_room_entry_id"], name: "index_store_room_entry_contents_on_store_room_entry_id"
   end
@@ -71,6 +78,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_20_054542) do
     t.integer "store_room_exit_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "content_type"
+    t.integer "weight"
+    t.boolean "is_drive", default: false
     t.index ["store_room_exit_id"], name: "index_store_room_exit_contents_on_store_room_exit_id"
   end
 

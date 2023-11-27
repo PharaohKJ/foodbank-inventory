@@ -65,6 +65,7 @@ class ReceiveDonationRequestsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def receive_donation_request_params
-      params.require(:receive_donation_request).permit(:tel, :name, :scheduled_time, :accepted)
+      params.require(:receive_donation_request).permit(
+        :organization_name, :tel, :name, :scheduled_at, :fax, :used_at, :reason)
     end
 end

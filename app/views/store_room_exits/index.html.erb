@@ -1,10 +1,10 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Store room exits</h1>
+<h1>出庫表一覧</h1>
 
 <div id="store_room_exits">
-  <% @store_room_exits.each do |store_room_exit| %>
-    <%= render store_room_exit %>
+  <% @store_room_exits.order(id: :desc).each do |store_room_exit| %>
+    <%= store_room_exit.created_at %>
     <p>
       <%= link_to "Show this store room exit", store_room_exit %>
     </p>
