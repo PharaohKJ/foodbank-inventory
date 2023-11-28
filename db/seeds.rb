@@ -52,7 +52,8 @@ sre.store_room_entry_contents.create(
   maker: 'メーカ1',
   name: '白米のサンプル',
   content_type: 3,
-  donation_request_content_id: drc1.id
+  donation_request_content_id: drc1.id,
+  weight: 1_000
 )
 
 sre.store_room_entry_contents.create(
@@ -60,7 +61,8 @@ sre.store_room_entry_contents.create(
   maker: 'メーカ2',
   name: '小麦粉のサンプル',
   content_type: 4,
-  donation_request_content_id: drc2.id
+  donation_request_content_id: drc2.id,
+  weight: 2_000
 )
 
 sre.store_room_entry_contents.create(
@@ -68,7 +70,8 @@ sre.store_room_entry_contents.create(
   maker: 'メーカ3',
   name: 'カレー粉のサンプル',
   content_type: 4,
-  donation_request_content_id: drc3.id
+  donation_request_content_id: drc3.id,
+  weight: 200
 )
 
 sre.store_room_entry_contents.create(
@@ -76,7 +79,8 @@ sre.store_room_entry_contents.create(
   maker: 'メーカ4',
   name: 'ツナ缶のサンプル',
   content_type: 2,
-  donation_request_content_id: drc4.id
+  donation_request_content_id: drc4.id,
+  weight: 50
 )
 
 

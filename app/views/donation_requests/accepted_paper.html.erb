@@ -10,7 +10,7 @@
       <tr>
         <td><%= c.name %></td>
         <td><%= c.maker %></td>
-        <td><%= c.per_weight %></td>
+        <td><%= (c.per_weight / 1_000.0).round(2) %></td>
         <td><%= c.count %></td>
         <td><%= c.count * c.per_weight / 1000.0 %></td>
       </tr>

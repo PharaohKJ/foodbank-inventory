@@ -60,14 +60,23 @@
   <tbody>
   <% store_room_exit.store_room_exit_contents.order(id: :desc).each do |content| %>
     <tr>
-      <td><%= content.code %></td>
+      <td class="font-monospace">
+        <% if content.is_drive %>
+          <small><%= content.name %></small><br/>
+          <small>(なし)</small>
+        <% else %>
+          <%= content.code %>
+        <% end %>
+      </td>
       <td><%= content.content_type %></td>
       <td><%= content.name %></td>
-      <% if %w[9784814400492 1923055024007].include?(content.code.to_s) %>
-        <td>-</td>
+      <% if content.is_drive %>
+        <td class="text-end">
+          -
+        </td>
       <% else %>
         <td class="text-end">
-          <%= content.weight %>
+          <%= (content.weight.to_i / 1_000.0).to_fs(:rounded, precision: 2) %>
         </td>
       <% end %>
     </tr>
@@ -82,7 +91,9 @@
     <td>計</td>
     <td></td>
     <td></td>
-    <td class="text-end"><%= store_room_exit.store_room_exit_contents.sum(:weight).to_fs(:delimited) %></td>
+    <td class="text-end">
+      <%= (store_room_exit.store_room_exit_contents.sum(:weight)/1_000.0).to_fs(:rounded, precision: 2) %>
+    </td>
   </tr>
   </tbody>
 </table>

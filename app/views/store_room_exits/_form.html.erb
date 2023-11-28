@@ -114,10 +114,12 @@
         <td><%= content.content_type %></td>
         <td><%= content.name %></td>
         <% if content.is_drive %>
-          <td>-</td>
+          <td class="text-end">
+            -
+          </td>
         <% else %>
-          <td>
-            <%= content.weight %>
+          <td class="text-end">
+            <%= (content.weight.to_i/ 1_000.0).round(2).to_fs(:rounded, precision: 2) %>
           </td>
         <% end %>
         <td>
