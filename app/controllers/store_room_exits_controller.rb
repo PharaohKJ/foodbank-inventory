@@ -28,7 +28,6 @@ class StoreRoomExitsController < ApplicationController
   end
 
   def update_input_weight
-    binding.debugger
     f = FormInputWeight.new(input_weight_params)
 
     respond_to do |format|
