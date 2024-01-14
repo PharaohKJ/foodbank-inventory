@@ -32,7 +32,7 @@ class StoreRoomExitContentsController < ApplicationController
   # POST /store_room_exit_contents or /store_room_exit_contents.json
   def create
     @store_room_exit_content = StoreRoomExitContent.new(store_room_exit_content_params)
-    @store_room_exit_content.weight = @store_room_exit_content.weight.to_f * 1_000
+    @store_room_exit_content.weight = store_room_exit_content_params[:weight].to_f * 1_000
     respond_to do |format|
       if @store_room_exit_content.save
         format.html { redirect_to edit_store_room_exit_url(@store_room_exit_content.store_room_exit_id), notice: "ドライブの品を追加しました。" }

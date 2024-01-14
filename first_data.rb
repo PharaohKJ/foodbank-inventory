@@ -29,7 +29,7 @@ CSV.foreach(csv_file_path, headers: true) do |row|
   )
 end
 
-Organization.each do |o|
+Organization.all.each do |o|
   code = EntryCode.new
 
 end
