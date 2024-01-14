@@ -38,7 +38,7 @@
 
 <div class="row m-1">
   <div class="col">
-    合計 <%= store_room_exit.store_room_exit_contents.count %> 個
+    合計 <%= store_room_exit.store_room_exit_contents.sum(:count) %> 個
   </div>
 </div>
 
@@ -88,7 +88,9 @@
   <tr>
     <td>計</td>
     <td></td>
-    <td></td>
+    <td>
+      <%= store_room_exit.store_room_exit_contents.sum(:count) %> 個
+    </td>
     <td class="text-end">
       <%= (store_room_exit.store_room_exit_contents.sum(:weight)/1_000.0).to_fs(:rounded, precision: 2) %>
     </td>
