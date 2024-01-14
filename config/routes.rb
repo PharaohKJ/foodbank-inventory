@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :organizations
   resources :store_room_exits do
     collection do
       get 'entry', to: 'store_room_exits#entry'
@@ -9,6 +10,7 @@ Rails.application.routes.draw do
       get 'input_weight'
       post 'input_weight', to: 'store_room_exits#update_input_weight'
     end
+    resources :store_room_exit_contents
   end
   resources :receive_donation_requests
   resources :store_room_entries

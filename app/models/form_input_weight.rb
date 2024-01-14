@@ -11,13 +11,13 @@ class FormInputWeight
   attribute :name7, :string
   attribute :name8, :string
   attribute :name9, :string
-  attribute :weight1, :integer
-  attribute :weight2, :integer
-  attribute :weight3, :integer
-  attribute :weight4, :integer
-  attribute :weight5, :integer
-  attribute :weight6, :integer
-  attribute :weight7, :integer
-  attribute :weight8, :integer
-  attribute :weight9, :integer
+  attribute :weight1, :float
+  attribute :weight2, :float
+  attribute :weight3, :float
+  attribute :weight4, :float
+  attribute :weight5, :float
+  attribute :weight6, :float
+  attribute :weight7, :float
+  attribute :weight8, :float
+  attribute :weight9, :float
 end

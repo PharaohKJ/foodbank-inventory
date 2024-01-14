@@ -13,9 +13,16 @@
 
 
   <div class="row">
+    <% if false %>
+      <div class="col-md-6 pb-4 border-bottom">
+        <%= form.label :organization_name, '持ち出す団体名', class: 'form-label'%>
+        <%= form.text_field :organization_name, required: true, class: 'form-control', placeholder: '団体名' %>
+      </div>
+    <% end %>
     <div class="col-md-6 pb-4 border-bottom">
-      <%= form.label :organization_name, '貴団体名', class: 'form-label'%>
-      <%= form.text_field :organization_name, required: true, class: 'form-control', placeholder: '団体名' %>
+      <%= form.label :organization_id, '貴団体名', class: 'form-label'%>
+      <%= form.collection_select :organization_id, Organization.all, :id, :name_with_id,
+                                 {include_blank: "選択して下さい"}, {class: "form-control"} %>
     </div>
     <div class="col-md-6 pb-4 border-bottom">
       <%= form.label :name, '当日ご担当者名(*)', class: 'form-label'%>
@@ -35,15 +42,15 @@
       <span class="text-muted">出庫する予定日を指定してください。予定の変更をお願いする場合にはご連絡差し上げます。</span>
     </div>
     <div class="col-md-6 pb-4 border-bottom">
-      <%= form.label :used_at, '使用予定日(*)', class: 'form-label'%>
-      <%= form.date_field :used_at, required: true, class: 'form-control' %>
+      <%= form.label :used_at, '使用予定日', class: 'form-label'%>
+      <%= form.date_field :used_at, class: 'form-control' %>
       <span class="text-muted">受け取った食品をいつ使う予定かご記入ください。</span>
     </div>
   </div>
   <div class="row">
     <div class="col-md pb-4 border-bottom">
-      <%= form.label :reason, '利用目的(*)', class: 'form-label'%>
-      <%= form.telephone_field :reason, class: 'form-control', placeholder: 'こども食堂で提供など' %>
+      <%= form.label :reason, '利用目的', class: 'form-label'%>
+      <%= form.text_field :reason, class: 'form-control', placeholder: 'こども食堂で提供など' %>
     </div>
   </div>
 

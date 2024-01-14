@@ -29,6 +29,11 @@ class StoreRoomExitsController < ApplicationController
 
   def update_input_weight
     f = FormInputWeight.new(input_weight_params)
+    records = @store_room_exit.store_room_exit_contents.where(is_drive: true).order(:code).uniq(&:code)
+    records.each_with_index do |r, i|
+      r.weight = f.send("weight#{i+1}").to_f*1_000
+      r.save
+    end
 
     respond_to do |format|
       format.html {
@@ -41,12 +46,27 @@ class StoreRoomExitsController < ApplicationController
   # POST /store_room_exits or /store_room_exits.json
   def create
     @store_room_exit                                  = StoreRoomExit.new(store_room_exit_params)
-    from                                              = @store_room_exit.from_receive_donation_request_id
-    @store_room_exit.from_receive_donation_request_id = ReceiveDonationRequest.last&.id
+    rdr = ReceiveDonationRequest.where(
+      organization_id: @store_room_exit.from_receive_donation_request_id,
+      received:        false
+    ).order(:scheduled_at).last
+
+    if rdr.nil?
+      respond_to do |format|
+        format.html {
+          redirect_to new_store_room_exit_url,
+                      notice: "出庫申請がみつかりませんでした。コードを確認してください。"
+        }
+      end
+      return
+    end
+
+    @store_room_exit.from_receive_donation_request_id = rdr&.id
+
     respond_to do |format|
       if @store_room_exit.save
         format.html {
-          redirect_to edit_store_room_exit_url(@store_room_exit, from: from),
+          redirect_to edit_store_room_exit_url(@store_room_exit),
                       notice: "出庫申請を開始します"
         }
         format.json { render :show, status: :created, location: @store_room_exit }
@@ -61,50 +81,22 @@ class StoreRoomExitsController < ApplicationController
   def update
     respond_to do |format|
       if params[:commit] == 'この内容で出庫'
-        if @store_room_exit.store_room_exit_contents.map(&:is_drive).include?(true)
-          @store_room_exit.save!
-          format.html {
-            redirect_to input_weight_store_room_exit_path(@store_room_exit)
-          }
-        else
-          @store_room_exit.draft = false
-          @store_room_exit.save!
-          format.html {
-            redirect_to store_room_exit_url(@store_room_exit),
-                        notice: "出庫しました"
-          }
-        end
-
+        @store_room_exit.draft = false
+        @store_room_exit.exited_at = Time.current
+        @store_room_exit.save!
+        format.html {
+          redirect_to store_room_exit_url(@store_room_exit),
+                      notice: "出庫しました"
+        }
       else
         c    = @store_room_exit.store_room_exit_contents.count
         code = params[:form_append_item][:code]
         lc = @store_room_exit.store_room_exit_contents.where(code:).count
 
         if code.to_s.start_with?('999')
-          code_map = {
-            '99900001': '菓子類',
-            '99900002': '缶詰・瓶詰類',
-            '99900003': '米・餅・粉・麺類',
-            '99900004': '調味料類',
-            '99900005': 'インスタント・レトルト類',
-            '99900006': '飲料・嗜好品類',
-            '99900007': '乾物類',
-            '99900008': '乳児食・介護食・栄養補助食類',
-            '99900009': 'その他',
-          }
-          t = code_map[code.to_s.to_sym] || '不明'
-          created = @store_room_exit.store_room_exit_contents.create(
-            code:,
-            name: "#{t} (ドライブ)-#{lc + 1}",
-            content_type: 1,
-            is_drive: true
-          )
           format.html {
-            redirect_to edit_store_room_exit_url(@store_room_exit),
-                        notice: "#{created.name}を追加しました"
+            redirect_to new_store_room_exit_store_room_exit_content_path(@store_room_exit, code:)
           }
-          format.json { render :show, status: :ok, location: @store_room_exit }
-
         else
           entry = StoreRoomEntryContent.find_by(barcode: code)
           if entry

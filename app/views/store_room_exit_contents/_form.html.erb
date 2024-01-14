@@ -1,0 +1,45 @@
+<%= form_with(model: [store_room_exit, store_room_exit_content]) do |form| %>
+  <% if store_room_exit_content.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(store_room_exit_content.errors.count, "error") %> prohibited this store_room_exit_content from being saved:</h2>
+
+      <ul>
+        <% store_room_exit_content.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <h1>フードドライブの場合、個数・重さを入力してください。</h1>
+
+  <div class="row">
+    <%= form.hidden_field :id %>
+    <%= form.hidden_field :code %>
+    <%= form.hidden_field :content_type %>
+    <%= form.hidden_field :is_drive %>
+    <%= form.hidden_field :store_room_exit_id %>
+
+    <div class="col-md-6 pb-4 border-bottom">
+      <%= form.label :name, '名前', class: 'form-label'%>
+      <%= form.text_field :name, required: true, class: 'form-control', readonly: true %>
+      <span class="text-muted"></span>
+    </div>
+
+    <div class="col-md-6 pb-4 border-bottom">
+      <%= form.label :count, '総個数', class: 'form-label'%>
+      <%= form.number_field :count, required: true, class: 'form-control', placeholder: '1' %>
+      <span class="text-muted"></span>
+    </div>
+
+    <div class="col-md-6 pb-4 border-bottom">
+      <%= form.label :weight, '総重さ(kg)', class: 'form-label'%>
+      <%= form.number_field :weight, required: true, class: 'form-control', step: '0.01' %>
+      <span class="text-muted"></span>
+    </div>
+
+  </div>
+  <div class="d-grid gap-2">
+    <%= form.submit '重さと個数を登録', class: 'btn btn-primary' %>
+  </div>
+<% end %>

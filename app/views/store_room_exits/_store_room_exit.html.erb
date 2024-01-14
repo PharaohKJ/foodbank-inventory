@@ -4,15 +4,19 @@
   <div class="col">
     <span class="text-muted">出庫日</span><br>
     <span class="">
+      <% if store_room_exit.exited_at.present? %>
+          <%= l(store_room_exit.exited_at, format: :long)  %>
+      <% else %>
           <%= l(Time.current, format: :long) %>
-          </span>
+      <% end %>
+    </span>
   </div>
 </div>
 <div class="row">
   <div class="col">
     <span class="text-muted">団体名</span><br>
     <span class="">
-          <%= entry.name %>
+          <%= entry.organization_name %>
           </span>
   </div>
   <div class="col">
@@ -63,22 +67,16 @@
       <td class="font-monospace">
         <% if content.is_drive %>
           <small><%= content.name %></small><br/>
-          <small>(なし)</small>
+          <small>(番号なし)</small>
         <% else %>
           <%= content.code %>
         <% end %>
       </td>
       <td><%= content.content_type %></td>
       <td><%= content.name %></td>
-      <% if content.is_drive %>
-        <td class="text-end">
-          -
-        </td>
-      <% else %>
-        <td class="text-end">
-          <%= (content.weight.to_i / 1_000.0).to_fs(:rounded, precision: 2) %>
-        </td>
-      <% end %>
+      <td class="text-end">
+        <%= (content.weight.to_i / 1_000.0).to_fs(:rounded, precision: 2) %>
+      </td>
     </tr>
   <% end %>
   <tr>

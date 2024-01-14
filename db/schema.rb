@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_23_015452) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_14_211607) do
   create_table "donation_request_contents", force: :cascade do |t|
     t.integer "donation_request_id", null: false
     t.string "maker"
@@ -36,6 +36,27 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_23_015452) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "entry_codes", force: :cascade do |t|
+    t.string "code"
+    t.integer "organization_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_entry_codes_on_organization_id"
+  end
+
+  create_table "organizations", force: :cascade do |t|
+    t.string "name"
+    t.string "pic"
+    t.string "postal_code"
+    t.string "address"
+    t.string "email"
+    t.date "agreement_at"
+    t.string "tel"
+    t.string "fax"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "receive_donation_requests", force: :cascade do |t|
     t.string "tel"
     t.string "name"
@@ -49,6 +70,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_23_015452) do
     t.datetime "used_at"
     t.datetime "scheduled_at"
     t.datetime "accepted_at"
+    t.integer "organization_id"
+    t.datetime "received_at"
+    t.boolean "received", default: false
+    t.index ["organization_id"], name: "index_receive_donation_requests_on_organization_id"
   end
 
   create_table "store_room_entries", force: :cascade do |t|
@@ -59,7 +84,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_23_015452) do
   end
 
   create_table "store_room_entry_contents", force: :cascade do |t|
-    t.integer "store_room_entry_id", null: false
+    t.integer "store_room_entry_id"
     t.string "barcode"
     t.string "maker"
     t.string "name"
@@ -81,6 +106,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_23_015452) do
     t.integer "content_type"
     t.integer "weight"
     t.boolean "is_drive", default: false
+    t.integer "count", default: 1
     t.index ["store_room_exit_id"], name: "index_store_room_exit_contents_on_store_room_exit_id"
   end
 
@@ -89,9 +115,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_23_015452) do
     t.integer "from_receive_donation_request_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "exited_at"
   end
 
   add_foreign_key "donation_request_contents", "donation_requests"
+  add_foreign_key "entry_codes", "organizations"
+  add_foreign_key "receive_donation_requests", "organizations"
   add_foreign_key "store_room_entries", "donation_requests"
   add_foreign_key "store_room_entry_contents", "donation_request_contents"
   add_foreign_key "store_room_entry_contents", "store_room_entries"

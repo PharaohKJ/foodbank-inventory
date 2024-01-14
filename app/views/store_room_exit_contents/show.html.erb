@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @store_room_exit_content %>
+
+<div>
+  <%= link_to "Edit this store room exit content", edit_store_room_exit_content_path(@store_room_exit_content) %> |
+  <%= link_to "Back to store room exit contents", store_room_exit_contents_path %>
+
+  <%= button_to "Destroy this store room exit content", @store_room_exit_content, method: :delete %>
+</div>

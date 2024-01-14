@@ -1,0 +1,12 @@
+<%= standard_container do %>
+<h1>個数の入力</h1>
+
+<%= render "form", store_room_exit: @store_room_exit, store_room_exit_content: @store_room_exit_content %>
+
+<br>
+
+<div>
+  <%= link_to "追加せずに戻る", edit_store_room_exit_path(@store_room_exit) %>
+</div>
+
+<% end %>

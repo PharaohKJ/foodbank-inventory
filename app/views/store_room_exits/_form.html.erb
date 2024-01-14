@@ -1,3 +1,5 @@
+<% contents_total_count = store_room_exit.store_room_exit_contents.sum(:count) %>
+
 <%= form_with(model: store_room_exit) do |form| %>
   <% if store_room_exit.errors.any? %>
     <div style="color: red">
@@ -25,7 +27,7 @@
       <div class="col">
         <span class="text-muted">団体名</span><br>
         <strong>
-          <%= entry.name %>
+          <%= entry.organization_name %>
         </strong>
       </div>
       <div class="col">
@@ -61,9 +63,19 @@
 
 <% if store_room_exit.persisted? %>
   <%= form_with(model: FormAppendItem.new, url: store_room_exit_path(store_room_exit), method: :PATCH) do |form| %>
+    <div class="row mb-4 text-end">
+      <div class="col-12">
+        <% if contents_total_count > 50 %>
+          <%= form.submit '合計数が50個を超えているので出庫できません。減らしてください！', class: 'btn btn-secondary', disabled: true %>
+        <% else %>
+          <%= form.submit 'この内容で出庫', class: 'btn btn-primary' %>
+        <% end %>
+      </div>
+    </div>
+
     <div class="row">
       <div class="col">
-        <% if store_room_exit.store_room_exit_contents.count >= 50 %>
+        <% if contents_total_count > 50 %>
           <%= form.text_field :code, class: 'form-control', placeholder: '50を超えているので追加できません', disabled: true %>
         <% else %>
           <%= form.text_field :code, class: 'form-control', autofocus: true, placeholder: 'ここでバーコードをスキャンしてください' %>
@@ -72,64 +84,78 @@
     </div>
     <div class="row m-1">
       <div class="col">
-        現在: <%= store_room_exit.store_room_exit_contents.count %> 個 / 50個
+        現在: <%= store_room_exit.store_room_exit_contents.sum(:count) %> 個 / 50個
       </div>
     </div>
     <div class="d-grid gap-2 mt-1">
       <%= form.submit 'バーコードで追加', class: 'btn btn-primary' %>
     </div>
 
-
-  <table class="table border-1 table-striped">
-    <thead>
-    <tr>
-      <td>
-        バーコード
-      </td>
-      <td>
-        種別
-      </td>
-      <td>
-        食品名
-      </td>
-      <td>
-        重さ(kg)
-      </td>
-      <td>
-        取消
-      </td>
-    </tr>
-    </thead>
-    <tbody>
-    <% store_room_exit.store_room_exit_contents.order(id: :desc).each do |content| %>
+    <table class="table table-bordered border-1 table-striped">
+      <thead>
       <tr>
-        <td class="font-monospace">
-          <% if content.is_drive %>
-            <small><%= content.name %></small><br/>
-            <small>(なし)</small>
-          <% else %>
-            <%= content.code %>
-          <% end %>
-        </td>
-        <td><%= content.content_type %></td>
-        <td><%= content.name %></td>
-        <% if content.is_drive %>
-          <td class="text-end">
-            -
-          </td>
-        <% else %>
-          <td class="text-end">
-            <%= (content.weight.to_i/ 1_000.0).round(2).to_fs(:rounded, precision: 2) %>
-          </td>
-        <% end %>
         <td>
-          <button class="btn btn-danger">x</button>
+          バーコード
+        </td>
+        <td>
+          種別
+        </td>
+        <td>
+          食品名
+        </td>
+        <td>
+          個数
+        </td>
+        <td>
+          重さ(kg)
+        </td>
+        <td>
+          取消
         </td>
       </tr>
-    <% end %>
-    </tbody>
-  </table>
-    <%= form.submit 'この内容で出庫', class: 'btn btn-primary' %>
+      </thead>
+      <tbody>
+      <% store_room_exit.store_room_exit_contents.order(id: :desc).each do |content| %>
+        <tr>
+          <td class="font-monospace">
+            <% if content.is_drive %>
+              <small><%= content.name %></small><br/>
+              <small>(番号なし)</small>
+            <% else %>
+              <%= content.code %>
+            <% end %>
+          </td>
+          <td><%= content.content_type %></td>
+          <td><%= content.name %></td>
+          <td class="text-end"><%= content.count %></td>
+          <td class="text-end">
+            <%= (content.weight.to_i / 1_000.0).round(2).to_fs(:rounded, precision: 2) %>
+          </td>
+          <td>
+            <button class="btn btn-danger">
+              <%= link_to 'x',
+                          store_room_exit_store_room_exit_content_path(
+                            id: content.id, store_room_exit_id: store_room_exit.id
+                          ),
+                          data: { turbo_method: :delete }
+              %>
+            </button>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <div class="row mb-4 text-end">
+      <div class="col-12">
+        <div class="col-12">
+          <% if contents_total_count > 50 %>
+            <%= form.submit '合計数が50個を超えているので出庫できません。減らしてください！', class: 'btn btn-secondary', disabled: true %>
+          <% else %>
+            <%= form.submit 'この内容で出庫', class: 'btn btn-primary' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
   <% end %>
 
 <% end %>

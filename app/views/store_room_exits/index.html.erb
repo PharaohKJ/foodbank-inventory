@@ -4,7 +4,9 @@
 
 <div id="store_room_exits">
   <% @store_room_exits.order(id: :desc).each do |store_room_exit| %>
-    <%= store_room_exit.created_at %>
+    <%= l(store_room_exit.created_at, format: :long) %>
+    <%= l(store_room_exit.exited_at, format: :long) if store_room_exit.exited_at.present? %>
+
     <p>
       <%= link_to "Show this store room exit", store_room_exit %>
     </p>

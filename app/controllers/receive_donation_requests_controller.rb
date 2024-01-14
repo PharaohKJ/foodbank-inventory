@@ -22,6 +22,7 @@ class ReceiveDonationRequestsController < ApplicationController
   # POST /receive_donation_requests or /receive_donation_requests.json
   def create
     @receive_donation_request = ReceiveDonationRequest.new(receive_donation_request_params)
+    @receive_donation_request.organization_name = Organization.find(@receive_donation_request.organization_id).name
 
     respond_to do |format|
       if @receive_donation_request.save
@@ -66,6 +67,6 @@ class ReceiveDonationRequestsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def receive_donation_request_params
       params.require(:receive_donation_request).permit(
-        :organization_name, :tel, :name, :scheduled_at, :fax, :used_at, :reason)
+        :organization_name, :tel, :name, :scheduled_at, :fax, :used_at, :reason, :organization_id)
     end
 end
