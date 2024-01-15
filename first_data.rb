@@ -29,6 +29,22 @@ CSV.foreach(csv_file_path, headers: true) do |row|
   )
 end
 
+csv_file_path = 'db/first-data-organizations2.csv'
+
+CSV.foreach(csv_file_path, headers: true) do |row|
+  next if Organization.find_by(name: row[2])
+  s = Organization.create!(
+    name: row[2],
+    pic: row[5],
+    # postal_code: row[4],
+    address: row[4],
+    email: row[6],
+    #agreement_at: row[7],
+    # tel: row[8],
+    # fax: row[9]
+  )
+end
+
 Organization.all.each do |o|
   code = EntryCode.new
 
