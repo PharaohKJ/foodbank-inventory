@@ -63,6 +63,7 @@
 
 <% if store_room_exit.persisted? %>
   <%= form_with(model: FormAppendItem.new, url: store_room_exit_path(store_room_exit), method: :PATCH) do |form| %>
+    <%= form.submit 'バーコードで追加', class: 'invisible' %>
     <div class="row mb-4 text-end">
       <div class="col-12">
         <% if contents_total_count > 50 %>
