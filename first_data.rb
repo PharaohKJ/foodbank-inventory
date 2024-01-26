@@ -31,7 +31,7 @@ end
 
 csv_file_path = 'db/first-data-organizations2.csv'
 
-CSV.foreach(csv_file_path, headers: true) do |row|
+CSV.foreach(csv_file_path) do |row|
   next if Organization.find_by(name: row[2])
   s = Organization.create!(
     name: row[2],
