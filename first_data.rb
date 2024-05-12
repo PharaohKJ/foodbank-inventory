@@ -5,7 +5,7 @@ csv_file_path = 'db/first-data-item.csv'
 CSV.foreach(csv_file_path, headers: true) do |row|
   next if StoreRoomEntryContent.find_by(barcode: row[0])
   s = StoreRoomEntryContent.create!(
-    barcode: row[0],
+    barcode: row[0].to_s.gsub(/[^0-9]/,''),
     maker: row[4],
     name: row[3],
     content_type: row[1],
