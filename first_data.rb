@@ -2,7 +2,7 @@ require 'csv'
 
 csv_file_path = 'db/first-data-item.csv'
 
-CSV.foreach(csv_file_path, headers: true) do |row|
+CSV.foreach(csv_file_path, headers: true, col_sep: "\t") do |row|
   next if StoreRoomEntryContent.find_by(barcode: row[0])
   s = StoreRoomEntryContent.create!(
     barcode: row[0].to_s.gsub(/[^0-9]/,''),
