@@ -12,9 +12,9 @@ class StoreRoomEntriesController < ApplicationController
 
   # GET /store_room_entries/new
   def new
-    from_id = params[:donation_request_id]
-    from_dr = DonationRequest.find(from_id)
-    @store_room_entry = StoreRoomEntry.new
+    from_id                               = params[:donation_request_id]
+    from_dr                               = DonationRequest.find(from_id)
+    @store_room_entry                     = StoreRoomEntry.new
     @store_room_entry.donation_request_id = from_dr.id
     from_dr.donation_request_contents.each do |dr_content|
       dr_content.count.times do |i|
@@ -22,9 +22,9 @@ class StoreRoomEntriesController < ApplicationController
         m = dr_content.created_at.month.to_s(16)
         d = dr_content.created_at.day
         @store_room_entry.store_room_entry_contents.build(
-          maker: dr_content.maker,
-          name: "#{dr_content.name}-#{i}",
-          barcode: format("A#{y}#{m}#{d}%05<number>dA", number: i),
+          maker:                       dr_content.maker,
+          name:                        "#{dr_content.name}-#{i}",
+          barcode:                     format("A#{y}#{m}#{d}%05<number>dA", number: i),
           donation_request_content_id: dr_content.id
         )
       end
@@ -73,14 +73,31 @@ class StoreRoomEntriesController < ApplicationController
     end
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_store_room_entry
-      @store_room_entry = StoreRoomEntry.find(params[:id])
-    end
+  def direct
+  end
 
-    # Only allow a list of trusted parameters through.
-    def store_room_entry_params
-      params.require(:store_room_entry).permit(:donation_request_id)
+  def direct_post
+    @data = params[:ad]
+    StoreRoomEntry.transaction do
+      @entries = StoreRoomEntry.parse_tsv(@data)
+      @entries.each(&:save!)
     end
+  end
+
+  def direct_preview
+    @data = params[:ad]
+    @parsed_entries = StoreRoomEntry.parse_tsv(@data)
+  end
+
+  private
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_store_room_entry
+    @store_room_entry = StoreRoomEntry.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def store_room_entry_params
+    params.require(:store_room_entry).permit(:donation_request_id)
+  end
 end

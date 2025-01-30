@@ -1,0 +1,11 @@
+<% if preview_mode %>
+  <% url = direct_preview_store_room_entries_path %>
+<% else %>
+  <% url = direct_store_room_entries_path %>
+<% end %>
+<%= form_tag url, method: :post, data: { turbo: false } do %>
+  <%= submit_tag '送信'  %>
+  <%= url %>
+  <%= text_area_tag(:ad, @data, size: '50x10', class: 'form-control') %>
+  <%= submit_tag '送信'  %>
+<% end %>

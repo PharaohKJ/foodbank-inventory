@@ -13,7 +13,13 @@ Rails.application.routes.draw do
     resources :store_room_exit_contents
   end
   resources :receive_donation_requests
-  resources :store_room_entries
+  resources :store_room_entries do
+    collection do
+      get 'direct', to: 'store_room_entries#direct'
+      post 'direct_preview', to: 'store_room_entries#direct_preview'
+      post 'direct', to: 'store_room_entries#direct_post'
+    end
+  end
   resources :donation_requests do
     collection do
       get 'entry', to: 'donation_requests#entry'

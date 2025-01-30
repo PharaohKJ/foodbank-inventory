@@ -1,0 +1,30 @@
+<%= standard_container do %>
+  <h1>入力の確認</h1>
+  <p>
+    以下の内容で問題ない場合、送信を押してください。<br/>
+    （すでに登録されているデータはスキップしています）
+  </p>
+  <p>
+    問題があった場合、
+    <%= link_to 'ここをクリックして戻って', direct_store_room_entries_path %> ください。
+  </p>
+
+  <table class="table">
+    <thead>
+    <tr><th>Aなしコード</th><th>メーカ</th><th>名前</th><th>タイプ</th><th>重さ(グラム)</th></tr>
+    </thead>
+    <tbody>
+    <% @parsed_entries.each do |pe| %>
+      <tr>
+        <td><%= pe.barcode %></td>
+        <td><%= pe.maker %></td>
+        <td><%= pe.name %></td>
+        <td><%= pe.content_type %></td>
+        <td><%= pe.weight %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+  <%= render 'direct_form', preview_mode: false %>
+<% end %>
