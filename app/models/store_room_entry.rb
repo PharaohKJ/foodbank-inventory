@@ -7,9 +7,10 @@ class StoreRoomEntry < ApplicationRecord
   def self.parse_tsv(tsv_data)
     out = []
     CSV.parse(tsv_data, col_sep: "\t") do |row|
-      next if StoreRoomEntryContent.find_by(barcode: row[0])
+      code = row[0].to_s.gsub(/[^0-9]/,'')
+      next if StoreRoomEntryContent.find_by(barcode: code)
       out << StoreRoomEntryContent.new(
-        barcode: row[0].to_s.gsub(/[^0-9]/,''),
+        barcode: code,
         maker: row[4],
         name: row[3],
         content_type: row[1],
