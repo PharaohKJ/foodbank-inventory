@@ -9,6 +9,9 @@
     <%= link_to 'ここをクリックして戻って', direct_store_room_entries_path %> ください。
   </p>
 
+  <% if @parsed_entries.count.zero? %>
+    <h1>全て重複しているかデータなし</h1>
+  <% end %>
   <table class="table">
     <thead>
     <tr><th>Aなしコード</th><th>メーカ</th><th>名前</th><th>タイプ</th><th>重さ(グラム)</th></tr>
