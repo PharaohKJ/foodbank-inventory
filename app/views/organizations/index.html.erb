@@ -1,14 +1,19 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Organizations</h1>
+<%= standard_container do %>
+  <h1>団体一覧</h1>
+  <%= link_to "団体新規登録", new_organization_path %>
+  <hr>
 
-<div id="organizations">
-  <% @organizations.each do |organization| %>
-    <%= render organization %>
-    <p>
-      <%= link_to "Show this organization", organization %>
-    </p>
-  <% end %>
-</div>
+  <div id="organizations">
+    <% @organizations.each do |organization| %>
+      <%= render organization %>
+      <p>
+        <%= link_to "詳細", organization %>
+      </p>
+      <hr>
+    <% end %>
+  </div>
 
-<%= link_to "New organization", new_organization_path %>
+  <%= link_to "団体新規登録", new_organization_path %>
+<% end %>

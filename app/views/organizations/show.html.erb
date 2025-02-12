@@ -1,10 +1,13 @@
 <p style="color: green"><%= notice %></p>
 
-<%= render @organization %>
+<%= standard_container do %>
 
-<div>
-  <%= link_to "Edit this organization", edit_organization_path(@organization) %> |
-  <%= link_to "Back to organizations", organizations_path %>
+  <%= render @organization %>
 
-  <%= button_to "Destroy this organization", @organization, method: :delete %>
-</div>
+  <div>
+    <%= link_to "編集", edit_organization_path(@organization) %> |
+    <%= link_to "一覧に戻る", organizations_path %>
+
+    <%= button_to "削除", @organization, method: :delete %>
+  </div>
+<% end %>
