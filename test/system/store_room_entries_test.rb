@@ -11,31 +11,23 @@ class StoreRoomEntriesTest < ApplicationSystemTestCase
   end
 
   test "should create store room entry" do
-    visit store_room_entries_url
-    click_on "New store room entry"
+    visit new_store_room_entry_url(donation_request_id: @store_room_entry.donation_request_id)
 
-    fill_in "Donation request", with: @store_room_entry.donation_request_id
-    click_on "Create Store room entry"
+    click_on "エクセルのダウンロード"
 
     assert_text "Store room entry was successfully created"
-    click_on "Back"
   end
 
   test "should update Store room entry" do
-    visit store_room_entry_url(@store_room_entry)
-    click_on "Edit this store room entry", match: :first
+    visit edit_store_room_entry_url(@store_room_entry)
 
-    fill_in "Donation request", with: @store_room_entry.donation_request_id
-    click_on "Update Store room entry"
+    click_on "エクセルのダウンロード"
 
     assert_text "Store room entry was successfully updated"
-    click_on "Back"
   end
 
-  test "should destroy Store room entry" do
-    visit store_room_entry_url(@store_room_entry)
-    click_on "Destroy this store room entry", match: :first
-
-    assert_text "Store room entry was successfully destroyed"
+  test "should display existing Store room entry" do
+    visit store_room_entries_url
+    assert_text @store_room_entry.id.to_s
   end
 end
