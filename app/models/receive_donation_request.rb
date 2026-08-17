@@ -1,3 +1,3 @@
 class ReceiveDonationRequest < ApplicationRecord
-  has_one :organization
+  belongs_to :organization, optional: true
 end

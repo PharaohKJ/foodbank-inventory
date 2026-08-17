@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.2.0"
+ruby "3.4.10"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.5"
@@ -11,6 +11,12 @@ gem "sprockets-rails"
 
 # Use sqlite3 as the database for Active Record
 gem "sqlite3", "~> 1.4"
+
+# CSV is no longer bundled with Ruby 3.4
+gem "csv"
+
+# Rails 7.0's test runner is not compatible with Minitest 6
+gem "minitest", "< 6"
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", "~> 5.0"
