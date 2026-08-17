@@ -5,6 +5,7 @@ one:
   tel: MyString
   name: MyString
   scheduled_time: 2023-09-20 14:37:08
+  scheduled_at: 2023-09-20 14:37:08
   accepted: false
 
 two:
@@ -12,4 +13,5 @@ two:
   tel: MyString
   name: MyString
   scheduled_time: 2023-09-20 14:37:08
+  scheduled_at: 2023-09-20 14:37:08
   accepted: false

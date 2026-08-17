@@ -1,9 +1,10 @@
 class StoreRoomExitContentsController < ApplicationController
+  before_action :set_store_room_exit
   before_action :set_store_room_exit_content, only: %i[ show edit update destroy ]
 
   # GET /store_room_exit_contents or /store_room_exit_contents.json
   def index
-    @store_room_exit_contents = StoreRoomExitContent.all
+    @store_room_exit_contents = @store_room_exit.store_room_exit_contents
   end
 
   # GET /store_room_exit_contents/1 or /store_room_exit_contents/1.json
@@ -22,7 +23,6 @@ class StoreRoomExitContentsController < ApplicationController
       store_room_exit_id: params[:store_room_exit_id],
       is_drive: true,
     )
-    @store_room_exit = StoreRoomExit.find(params[:store_room_exit_id])
   end
 
   # GET /store_room_exit_contents/1/edit
@@ -36,7 +36,10 @@ class StoreRoomExitContentsController < ApplicationController
     respond_to do |format|
       if @store_room_exit_content.save
         format.html { redirect_to edit_store_room_exit_url(@store_room_exit_content.store_room_exit_id), notice: "ドライブの品を追加しました。" }
-        format.json { render :show, status: :created, location: @store_room_exit_content }
+        format.json {
+          render :show, status: :created,
+                 location: store_room_exit_store_room_exit_content_url(@store_room_exit, @store_room_exit_content)
+        }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @store_room_exit_content.errors, status: :unprocessable_entity }
@@ -48,8 +51,14 @@ class StoreRoomExitContentsController < ApplicationController
   def update
     respond_to do |format|
       if @store_room_exit_content.update(store_room_exit_content_params)
-        format.html { redirect_to store_room_exit_content_url(@store_room_exit_content), notice: "Store room exit content was successfully updated." }
-        format.json { render :show, status: :ok, location: @store_room_exit_content }
+        format.html {
+          redirect_to store_room_exit_store_room_exit_content_url(@store_room_exit, @store_room_exit_content),
+                      notice: "Store room exit content was successfully updated."
+        }
+        format.json {
+          render :show, status: :ok,
+                 location: store_room_exit_store_room_exit_content_url(@store_room_exit, @store_room_exit_content)
+        }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @store_room_exit_content.errors, status: :unprocessable_entity }
@@ -72,7 +81,10 @@ class StoreRoomExitContentsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_store_room_exit_content
-      @store_room_exit_content = StoreRoomExitContent.find(params[:id])
+      @store_room_exit_content = @store_room_exit.store_room_exit_contents.find(params[:id])
+    end
+
+    def set_store_room_exit
       @store_room_exit = StoreRoomExit.find(params[:store_room_exit_id])
     end
 

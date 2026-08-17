@@ -17,7 +17,14 @@ class ReceiveDonationRequestsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create receive_donation_request" do
     assert_difference("ReceiveDonationRequest.count") do
-      post receive_donation_requests_url, params: { receive_donation_request: { accepted: @receive_donation_request.accepted, name: @receive_donation_request.name, scheduled_time: @receive_donation_request.scheduled_time, tel: @receive_donation_request.tel } }
+      post receive_donation_requests_url, params: {
+        receive_donation_request: {
+          name: @receive_donation_request.name,
+          organization_id: organizations(:one).id,
+          scheduled_at: @receive_donation_request.scheduled_at,
+          tel: @receive_donation_request.tel
+        }
+      }
     end
 
     assert_redirected_to receive_donation_request_url(ReceiveDonationRequest.last)
