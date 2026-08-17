@@ -81,4 +81,4 @@ end
 
 gem "sorcery", "~> 0.16.5"
 
-gem "pg"
+gem "pg", platforms: %i[ ruby ]
