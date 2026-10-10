@@ -1,0 +1,89 @@
+name: Tests
+
+on:
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tests-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Tests (${{ matrix.suite }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [rails, system]
+
+    env:
+      RAILS_ENV: test
+      SKIP_YARN_INSTALL: "true"
+      DB_HOST: localhost
+      DB_PORT: "5432"
+      DB_USERNAME: foodbank_inventory
+      DB_PASSWORD: foodbank_inventory
+
+    services:
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_DB: foodbank_inventory_test
+          POSTGRES_USER: foodbank_inventory
+          POSTGRES_PASSWORD: foodbank_inventory
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U foodbank_inventory -d foodbank_inventory_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Yarn and JavaScript dependencies
+        run: |
+          npm install --global yarn@1.22.22
+          yarn install --frozen-lockfile
+
+      - name: Prepare database and assets
+        run: |
+          bin/rails db:prepare
+          bin/rails assets:precompile
+
+      - name: Run Rails tests
+        if: matrix.suite == 'rails'
+        run: bin/rails test
+
+      - name: Run system tests (E2E)
+        if: matrix.suite == 'system'
+        run: bin/rails test:system
+
+      - name: Upload failure logs and screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-failure-${{ matrix.suite }}
+          path: |
+            log/test.log
+            tmp/screenshots/
+          if-no-files-found: ignore
+          retention-days: 7
