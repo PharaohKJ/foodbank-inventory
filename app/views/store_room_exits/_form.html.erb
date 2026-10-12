@@ -63,13 +63,13 @@
 
 <% if store_room_exit.persisted? %>
   <%= form_with(model: FormAppendItem.new, url: store_room_exit_path(store_room_exit), method: :PATCH) do |form| %>
-    <%= form.submit 'バーコードで追加', class: 'invisible' %>
+    <%= form.button 'バーコードで追加', name: 'commit', value: 'append_item', class: 'invisible' %>
     <div class="row mb-4 text-end">
       <div class="col-12">
         <% if contents_total_count > 50 %>
-          <%= form.submit '合計数が50個を超えているので出庫できません。減らしてください！', class: 'btn btn-secondary', disabled: true %>
+          <%= form.button '合計数が50個を超えているので出庫できません。減らしてください！', name: 'commit', value: 'finalize', class: 'btn btn-secondary', disabled: true %>
         <% else %>
-          <%= form.submit 'この内容で出庫', class: 'btn btn-primary' %>
+          <%= form.button 'この内容で出庫', name: 'commit', value: 'finalize', class: 'btn btn-primary' %>
         <% end %>
       </div>
     </div>
@@ -89,7 +89,7 @@
       </div>
     </div>
     <div class="d-grid gap-2 mt-1">
-      <%= form.submit 'バーコードで追加', class: 'btn btn-primary' %>
+      <%= form.button 'バーコードで追加', name: 'commit', value: 'append_item', class: 'btn btn-primary' %>
     </div>
 
     <table class="table table-bordered border-1 table-striped">
@@ -150,9 +150,9 @@
       <div class="col-12">
         <div class="col-12">
           <% if contents_total_count > 50 %>
-            <%= form.submit '合計数が50個を超えているので出庫できません。減らしてください！', class: 'btn btn-secondary', disabled: true %>
+            <%= form.button '合計数が50個を超えているので出庫できません。減らしてください！', name: 'commit', value: 'finalize', class: 'btn btn-secondary', disabled: true %>
           <% else %>
-            <%= form.submit 'この内容で出庫', class: 'btn btn-primary' %>
+            <%= form.button 'この内容で出庫', name: 'commit', value: 'finalize', class: 'btn btn-primary' %>
           <% end %>
         </div>
       </div>

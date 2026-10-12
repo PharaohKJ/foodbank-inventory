@@ -80,7 +80,7 @@ class StoreRoomExitsController < ApplicationController
   # PATCH/PUT /store_room_exits/1 or /store_room_exits/1.json
   def update
     respond_to do |format|
-      if params[:commit] == 'この内容で出庫'
+      if params[:commit] == 'finalize'
         @store_room_exit.draft = false
         @store_room_exit.exited_at = Time.current
         @store_room_exit.save!
@@ -88,7 +88,7 @@ class StoreRoomExitsController < ApplicationController
           redirect_to store_room_exit_url(@store_room_exit),
                       notice: "出庫しました"
         }
-      else
+      elsif params[:commit] == 'append_item'
         c    = @store_room_exit.store_room_exit_contents.count
         code = params[:form_append_item][:code]
         lc = @store_room_exit.store_room_exit_contents.where(code:).count
@@ -124,6 +124,8 @@ class StoreRoomExitsController < ApplicationController
             }
           end
         end
+      else
+        format.html { head :bad_request }
       end
     end
   end
