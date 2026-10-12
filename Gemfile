@@ -1,10 +1,10 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.4.10"
+ruby "3.4.11"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 8.1.0"
+gem "rails", "~> 8.1.4"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
@@ -12,11 +12,10 @@ gem "sprockets-rails"
 # CSV is no longer bundled with Ruby 3.4
 gem "csv"
 
-# Rails 7.0's test runner is not compatible with Minitest 6
-gem "minitest", "< 6"
+gem "minitest", "~> 6.0"
 
 # Use the Puma web server [https://github.com/puma/puma]
-gem "puma", "~> 7.2"
+gem "puma", "~> 8.0"
 
 # Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails]
 gem "jsbundling-rails"
@@ -34,7 +33,7 @@ gem "cssbundling-rails"
 gem "jbuilder"
 
 # Use Redis adapter to run Action Cable in production
-gem "redis", "~> 4.0"
+gem "redis", "~> 6.0"
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -76,6 +75,6 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem "sorcery", "~> 0.16.5"
+gem "sorcery", "~> 0.18.0"
 
 gem "pg", platforms: %i[ ruby ]

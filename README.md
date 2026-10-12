@@ -2,16 +2,17 @@
 
 ## Requirements
 
-- Ruby 3.4.10 and Bundler
+- Ruby 3.4.11 and Bundler
 - Docker with Docker Compose
-- Node.js and Yarn
+- Node.js 22 or newer and Yarn 1.22.22
 
 ## Setup
 
-Install Ruby dependencies and start the local PostgreSQL server:
+Install Ruby and JavaScript dependencies and start the local PostgreSQL server:
 
 ```sh
 bundle install
+yarn install --frozen-lockfile
 docker compose up -d --wait db
 bin/rails db:prepare
 ```
