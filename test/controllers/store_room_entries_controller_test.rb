@@ -11,7 +11,7 @@ class StoreRoomEntriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get new" do
-    get new_store_room_entry_url
+    get new_store_room_entry_url, params: { donation_request_id: @store_room_entry.donation_request_id }
     assert_response :success
   end
 

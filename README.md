@@ -1,24 +1,45 @@
-# README
+# Foodbank Inventory
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Requirements
 
-Things you may want to cover:
+- Ruby 3.4.10 and Bundler
+- Docker with Docker Compose
+- Node.js and Yarn
 
-* Ruby version
+## Setup
 
-* System dependencies
+Install Ruby dependencies and start the local PostgreSQL server:
 
-* Configuration
+```sh
+bundle install
+docker compose up -d --wait db
+bin/rails db:prepare
+```
 
-* Database creation
+The Rails application runs on the host and connects to PostgreSQL 18 on `localhost:5432`, matching Heroku's default major version. Compose keeps development data in a named volume. The local database credentials are for development only; configure `DB_HOST`, `DB_PORT`, `DB_USERNAME`, and `DB_PASSWORD` to override them.
 
-* Database initialization
+PostgreSQL 17 data volumes are not upgraded automatically. When upgrading an existing local database, dump its data from PostgreSQL 17 and restore it into PostgreSQL 18; the previous Compose volume is left untouched.
 
-* How to run the test suite
+Start the application and asset watchers with `bin/dev`.
 
-* Services (job queues, cache servers, search engines, etc.)
+## Tests
 
-* Deployment instructions
+Start the same PostgreSQL service, then run the Rails and system test suites:
 
-* ...
+```sh
+docker compose up -d --wait db
+bin/rails test
+bin/rails test:system
+```
+
+Tests use the separate `foodbank_inventory_test` database. Parallel test workers create their own databases from it; the Compose database user has permission to create them.
+
+System tests (E2E) use headless Chrome by default, including in GitHub Actions. To run with a visible browser window locally, set `HEADLESS=false`:
+
+```sh
+HEADLESS=false bin/rails test:system
+```
+
+## Production
+
+Production also uses PostgreSQL. On Heroku, Active Record uses the platform-provided `DATABASE_URL`; do not commit production credentials.

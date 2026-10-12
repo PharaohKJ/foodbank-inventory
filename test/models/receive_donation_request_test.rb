@@ -1,7 +1,7 @@
 require "test_helper"
 
 class ReceiveDonationRequestTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test "belongs to its organization" do
+    assert_equal organizations(:one), receive_donation_requests(:one).organization
+  end
 end

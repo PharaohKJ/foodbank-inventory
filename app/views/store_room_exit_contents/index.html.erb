@@ -6,9 +6,10 @@
   <% @store_room_exit_contents.each do |store_room_exit_content| %>
     <%= render store_room_exit_content %>
     <p>
-      <%= link_to "Show this store room exit content", store_room_exit_content %>
+    <%= link_to "Show this store room exit content",
+                store_room_exit_store_room_exit_content_path(@store_room_exit, store_room_exit_content) %>
     </p>
   <% end %>
 </div>
 
-<%= link_to "New store room exit content", new_store_room_exit_content_path %>
+<%= link_to "New store room exit content", new_store_room_exit_store_room_exit_content_path(@store_room_exit) %>

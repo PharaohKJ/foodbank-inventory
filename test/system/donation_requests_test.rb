@@ -7,34 +7,33 @@ class DonationRequestsTest < ApplicationSystemTestCase
 
   test "visiting the index" do
     visit donation_requests_url
-    assert_selector "h1", text: "Donation requests"
+    assert_selector "h1", text: "寄附申請一覧"
   end
 
   test "should create donation request" do
-    visit donation_requests_url
-    click_on "New donation request"
+    visit new_donation_request_url
 
-    fill_in "Address", with: @donation_request.address
-    fill_in "Company", with: @donation_request.company
-    fill_in "Email", with: @donation_request.email
-    fill_in "Name", with: @donation_request.name
-    fill_in "Tel", with: @donation_request.tel
-    click_on "Create Donation request"
+    fill_in "住所", with: @donation_request.address
+    fill_in "寄附企業・団体名", with: @donation_request.company
+    fill_in "メールアドレス", with: @donation_request.email
+    fill_in "ご担当者名", with: @donation_request.name
+    fill_in "TEL", with: @donation_request.tel
+    click_on "寄附項目を追加"
 
     assert_text "Donation request was successfully created"
-    click_on "Back"
+    click_on "Back to donation requests"
   end
 
   test "should update Donation request" do
     visit donation_request_url(@donation_request)
     click_on "Edit this donation request", match: :first
 
-    fill_in "Address", with: @donation_request.address
-    fill_in "Company", with: @donation_request.company
-    fill_in "Email", with: @donation_request.email
-    fill_in "Name", with: @donation_request.name
-    fill_in "Tel", with: @donation_request.tel
-    click_on "Update Donation request"
+    fill_in "住所", with: @donation_request.address
+    fill_in "寄附企業・団体名", with: @donation_request.company
+    fill_in "メールアドレス", with: @donation_request.email
+    fill_in "ご担当者名", with: @donation_request.name
+    fill_in "TEL", with: @donation_request.tel
+    click_on "修正する"
 
     assert_text "Donation request was successfully updated"
     click_on "Back"

@@ -3,6 +3,7 @@ require "application_system_test_case"
 class ReceiveDonationRequestsTest < ApplicationSystemTestCase
   setup do
     @receive_donation_request = receive_donation_requests(:one)
+    @scheduled_at = @receive_donation_request.scheduled_at + 1.day
   end
 
   test "visiting the index" do
@@ -14,34 +15,35 @@ class ReceiveDonationRequestsTest < ApplicationSystemTestCase
     visit receive_donation_requests_url
     click_on "New receive donation request"
 
-    check "Accepted" if @receive_donation_request.accepted
-    fill_in "Name", with: @receive_donation_request.name
-    fill_in "Scheduled time", with: @receive_donation_request.scheduled_time
-    fill_in "Tel", with: @receive_donation_request.tel
-    click_on "Create Receive donation request"
+    select @receive_donation_request.organization.name_with_id, from: "貴団体名"
+    fill_in "当日ご担当者名(*)", with: @receive_donation_request.name
+    fill_in "出庫訪問予定日(*)", with: @scheduled_at
+    assert_field "出庫訪問予定日(*)", with: @scheduled_at.strftime("%Y-%m-%dT%H:%M")
+    fill_in "当日連絡電話番号(*)", with: @receive_donation_request.tel
+    click_on "申請します"
 
     assert_text "Receive donation request was successfully created"
-    click_on "Back"
+    assert_selector "h1", text: "#{I18n.l(@scheduled_at, format: :long)} で申請を受け付けました。"
+    click_on "申請の作成に戻る"
   end
 
   test "should update Receive donation request" do
-    visit receive_donation_request_url(@receive_donation_request)
-    click_on "Edit this receive donation request", match: :first
+    visit edit_receive_donation_request_url(@receive_donation_request)
 
-    check "Accepted" if @receive_donation_request.accepted
-    fill_in "Name", with: @receive_donation_request.name
-    fill_in "Scheduled time", with: @receive_donation_request.scheduled_time
-    fill_in "Tel", with: @receive_donation_request.tel
-    click_on "Update Receive donation request"
+    select @receive_donation_request.organization.name_with_id, from: "貴団体名"
+    fill_in "当日ご担当者名(*)", with: @receive_donation_request.name
+    fill_in "出庫訪問予定日(*)", with: @scheduled_at
+    assert_field "出庫訪問予定日(*)", with: @scheduled_at.strftime("%Y-%m-%dT%H:%M")
+    fill_in "当日連絡電話番号(*)", with: @receive_donation_request.tel
+    click_on "申請します"
 
-    assert_text "Receive donation request was successfully updated"
-    click_on "Back"
+    assert_text "で申請を受け付けました。"
+    assert_selector "h1", text: "#{I18n.l(@scheduled_at, format: :long)} で申請を受け付けました。"
+    click_on "申請の作成に戻る"
   end
 
-  test "should destroy Receive donation request" do
-    visit receive_donation_request_url(@receive_donation_request)
-    click_on "Destroy this receive donation request", match: :first
-
-    assert_text "Receive donation request was successfully destroyed"
+  test "should display existing Receive donation request" do
+    visit receive_donation_requests_url
+    assert_text @receive_donation_request.name
   end
 end

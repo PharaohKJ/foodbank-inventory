@@ -1,10 +1,12 @@
 <h1>Editing store room exit content</h1>
 
-<%= render "form", store_room_exit_content: @store_room_exit_content %>
+<%= render "form", store_room_exit: @store_room_exit, store_room_exit_content: @store_room_exit_content %>
 
 <br>
 
 <div>
-  <%= link_to "Show this store room exit content", @store_room_exit_content %> |
-  <%= link_to "Back to store room exit contents", store_room_exit_contents_path %>
+  <%= link_to "Show this store room exit content",
+              store_room_exit_store_room_exit_content_path(@store_room_exit, @store_room_exit_content) %> |
+  <%= link_to "Back to store room exit contents",
+              store_room_exit_store_room_exit_contents_path(@store_room_exit) %>
 </div>
